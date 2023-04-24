@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@nx-act-2/assets": ["libs/assets/src/index.ts"],
       "@nx-act-2/models": ["libs/models/src/index.ts"],
       "@nx-act-2/task-board/controllers": [
         "libs/task-board/controllers/src/index.ts"

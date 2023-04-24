@@ -17,7 +17,11 @@
         "tsConfig": "apps/task-board/tsconfig.app.json",
         "assets": [
           "apps/task-board/src/favicon.ico",
-          "apps/task-board/src/assets"
+          "apps/task-board/src/assets", {
+             "input": "libs/assets/src/lib",
+             "glob": "*.png",
+             "output": "assets"
+          }
         ],
         "styles": ["apps/task-board/src/styles.css"],
         "scripts": [],
@@ -92,5 +96,6 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "implicitDependencies": ["assets"]
 }

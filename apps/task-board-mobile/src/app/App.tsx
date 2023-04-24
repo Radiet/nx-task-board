@@ -4,7 +4,7 @@ import { addTask, completeTask, getTasks } from '@nx-act-2/task-board/controller
 import TaskItem from './task-item/task-item';
 import {
   KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity,
-  Keyboard, ScrollView
+  Keyboard, ScrollView, Image
 } from 'react-native';
 
 export default function App() {
@@ -41,6 +41,7 @@ export default function App() {
 
       {/* Today's Tasks */}
       <View style={styles.tasksWrapper}>
+      <Image source={require('./assets/logos.png')} style={{ height: 100, width: '100%', resizeMode: 'contain' }}/>
         <Text style={styles.sectionTitle}>Today's tasks</Text>
         <View style={styles.items}>
           {/* This is where the tasks will go! */}
@@ -119,5 +120,5 @@ const styles = StyleSheet.create({
     borderColor: '#C0C0C0',
     borderWidth: 1,
   },
-  addText: {},
+  addText: {}
 });

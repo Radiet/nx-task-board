@@ -80,6 +80,11 @@ button {
   background: #44c0b6;
 }
 
+img {
+  float: left;
+  width: 100px;
+}
+
 .delete-button {
   color: #fe6a6a;
   float: right;

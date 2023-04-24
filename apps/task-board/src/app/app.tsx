@@ -24,6 +24,7 @@ const App = () => {
 
   return (
     <div className='Dashboard'>
+      <img src={'/assets/logo.png'} />
       <h1>Today's task</h1>
       <div className='input-wrapper'>
         <input
