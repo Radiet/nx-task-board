@@ -1,48 +1,57 @@
-import "./app.module.css";
-import { useState } from "react";
-import TaskItem from "./task-item/task-item";
+import './app.module.css';
 
-const Dashboard = () => {
-  const [task, setTask] = useState<string>('');
-  const [taskItems, setTaskItems] = useState<string[]>([]);
+import { useState } from 'react';
+import { TaskItemEntity } from '@nx-act-2/models';
+import { addTask, completeTask } from '@nx-act-2/task-board/controllers';
+import TaskItem from './task-item/task-item';
 
-  const addTask = () => {
-    setTaskItems([...taskItems, task])
-    setTask('');
+const App = () => {
+  const [taskName, setTaskName] = useState<string>('');
+  const [taskItems, setTaskItems] = useState<TaskItemEntity[]>([]);
+
+  const onAddTask = () => {
+    addTask(taskName, (updatedTaskItems: TaskItemEntity) => {
+      setTaskItems([...taskItems, updatedTaskItems]);
+      setTaskName('');
+    })
   };
 
-  const completeTask = (index: number) => {
-    const itemsCopy = [...taskItems];
-    itemsCopy.splice(index, 1);
-    setTaskItems(itemsCopy)
+  const onCompleteTask = (title: string) => {
+    const updatedTaskItems = completeTask(taskItems, title);
+
+    setTaskItems(updatedTaskItems);
   };
 
   return (
-    <div className="Dashboard">
+    <div className='Dashboard'>
       <h1>Today's task</h1>
-      <div className="input-wrapper">
+      <div className='input-wrapper'>
         <input
-          type="text"
-          name="todo"
-          value={task}
-          placeholder="Write a task"
+          type='text'
+          name='todo'
+          value={taskName}
+          placeholder='Write a task'
           onChange={(e) => {
-            setTask(e.target.value);
+            setTaskName(e.target.value);
           }}
         />
-        <button className="add-button" onClick={addTask}>
+        <button className='add-button' onClick={onAddTask}>
           Add
         </button>
       </div>
 
       {taskItems?.length > 0 ? (
-        <ul className="todo-list">
-          {taskItems.map((task: string, index: number) => (
-            <TaskItem task={task} index={index} onComplete={completeTask} />
+        <ul className='todo-list'>
+          {taskItems.map((taskItem: TaskItemEntity, index: number) => (
+            <TaskItem
+              taskItem={taskItem}
+              onComplete={() => { onCompleteTask(taskItem.title) }}
+              key={index}
+            />
           ))}
         </ul>
       ) : (
-        <div className="empty">
+        <div className='empty'>
           <p>No task found</p>
         </div>
       )}
@@ -50,4 +59,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default App;

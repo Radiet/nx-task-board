@@ -1,12 +1,19 @@
 import React from 'react';
+import { TaskItemEntity } from '@nx-act-2/models'
 import { View, Text, StyleSheet } from 'react-native';
 
-const TaskItem = (props) => {
+export interface TaskItemProps {
+  taskItem: TaskItemEntity
+}
+
+const TaskItem = ({ taskItem }: TaskItemProps) => {
+  const { title } = taskItem;
+
   return (
     <View style={styles.item}>
       <View style={styles.itemLeft}>
         <View style={styles.square}></View>
-        <Text style={styles.itemText}>{props.text}</Text>
+        <Text style={styles.itemText}>{title}</Text>
       </View>
       <View style={styles.circular}></View>
     </View>

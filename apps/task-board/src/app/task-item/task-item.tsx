@@ -1,18 +1,21 @@
 import './task-item.module.css';
 
+import { TaskItemEntity } from '@nx-act-2/models'
+
 export interface TaskItemProps {
-  task: string
-  index: number
+  taskItem: TaskItemEntity
   onComplete: (index: number) => void
 }
 
-export function TaskItem({ index, task, onComplete }: TaskItemProps) {
+export function TaskItem({ taskItem, onComplete }: TaskItemProps) {
+  const { title, id } = taskItem
+
   return (
-    <div className="todo" key={index}>
-      <li key={index}> {task} </li>
+    <div className='todo'>
+      <li key={id}> {title} </li>
       <button
-        className="delete-button"
-        onClick={() => { onComplete(index); }}
+        className='delete-button'
+        onClick={() => { onComplete(id); }}
       >
         Complete
       </button>

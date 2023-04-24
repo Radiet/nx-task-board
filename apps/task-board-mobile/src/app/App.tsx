@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { TaskItemEntity } from '@nx-act-2/models';
+import { addTask, completeTask, getTasks } from '@nx-act-2/task-board/controllers';
 import TaskItem from './task-item/task-item';
 import {
   KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity,
@@ -7,20 +9,25 @@ import {
 
 export default function App() {
 
-  const [task, setTask] = useState();
-  const [taskItems, setTaskItems] = useState([]);
+  const [taskName, setTaskName] = useState<string>('');
+  const [taskItems, setTaskItems] = useState<TaskItemEntity[]>([]);
 
-  const handleAddTask = () => {
+  const onAddTask = () => {
     Keyboard.dismiss();
-    setTaskItems([...taskItems, task])
-    setTask(null);
-  }
 
-  const completeTask = (index) => {
-    const itemsCopy = [...taskItems];
-    itemsCopy.splice(index, 1);
-    setTaskItems(itemsCopy)
-  }
+    addTask(taskName, (updatedTaskItems: TaskItemEntity) => {
+      setTaskItems([...taskItems, updatedTaskItems]);
+      setTaskName('');
+    })
+  };
+
+  const onCompleteTask = (title: string) => {
+    const updatedTaskItems = completeTask(taskItems, title);
+
+    setTaskItems(updatedTaskItems);
+  };
+
+  useEffect(() => { getTasks(setTaskItems)}, [])
 
   return (
     <View style={styles.container}>
@@ -38,10 +45,10 @@ export default function App() {
         <View style={styles.items}>
           {/* This is where the tasks will go! */}
           {
-            taskItems.map((item, index) => {
+            taskItems.map((taskItem, index) => {
               return (
-                <TouchableOpacity key={index}  onPress={() => completeTask(index)}>
-                  <TaskItem text={item} />
+                <TouchableOpacity key={index}  onPress={() => onCompleteTask(taskItem.title)}>
+                  <TaskItem taskItem={taskItem} />
                 </TouchableOpacity>
               )
             })
@@ -57,8 +64,8 @@ export default function App() {
         behavior={"height"}
         style={styles.writeTaskWrapper}
       >
-        <TextInput style={styles.input} placeholder={'Write a task'} value={task} onChangeText={text => setTask(text)} />
-        <TouchableOpacity onPress={() => handleAddTask()}>
+        <TextInput style={styles.input} placeholder={'Write a task'} value={taskName} onChangeText={text => setTaskName(text)} />
+        <TouchableOpacity onPress={() => onAddTask()}>
           <View style={styles.addWrapper}>
             <Text style={styles.addText}>+</Text>
           </View>
